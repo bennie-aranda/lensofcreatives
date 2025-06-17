@@ -31,3 +31,5 @@ def index():
                 print("Exception occurred:", e)
 
     return render_template("index.html", image_url=image_url)
+
+    handler = app
