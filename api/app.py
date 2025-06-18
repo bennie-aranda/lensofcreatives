@@ -1,7 +1,14 @@
+import os
 from flask import Flask, render_template, request
 import requests
 
-app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+app = Flask(
+    __name__,
+    template_folder=os.path.join(BASE_DIR, 'templates'),
+    static_folder=os.path.join(BASE_DIR, 'static')
+)
 
 # 🔑 Replace with your actual Unsplash Access Key
 UNSPLASH_ACCESS_KEY = 'DTLEWE9_Pd90KFiBxY70nt2AHkMi4_Vm3nDUhJi557A'
