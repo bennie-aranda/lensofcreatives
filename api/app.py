@@ -40,3 +40,5 @@ def index():
     return render_template("index.html", image_url=image_url)
 
     handler = app
+
+    # checking my ports
