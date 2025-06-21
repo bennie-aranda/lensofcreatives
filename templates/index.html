@@ -31,5 +31,33 @@
       </div>
     {% endif %}
   </div>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('form');
+  const imageResult = document.querySelector('.image-result');
+  const img = imageResult ? imageResult.querySelector('img') : null;
+
+  // Fade in image on load
+  if (img) {
+    img.style.opacity = 0;
+    img.onload = function() {
+      img.style.transition = 'opacity 0.8s';
+      img.style.opacity = 1;
+    };
+    // If cached, trigger load event
+    if (img.complete) img.onload();
+  }
+
+  // Show loading spinner on submit
+  form.addEventListener('submit', function() {
+    let spinner = document.createElement('div');
+    spinner.className = 'spinner';
+    spinner.innerHTML = '<div></div><div></div><div></div>';
+    imageResult && (imageResult.innerHTML = '');
+    imageResult && imageResult.appendChild(spinner);
+  });
+});
+</script>
 </body>
 </html>

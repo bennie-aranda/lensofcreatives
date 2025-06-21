@@ -49,9 +49,17 @@ button:hover {
 }
 
 .image-result img {
-  margin-top: 2rem;
+  max-width: 100%;
   width: 100%;
-  border-radius: 8px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+  transition: transform 0.3s;
+  margin-top: 1.5rem;
+}
+
+.image-result img:hover {
+  transform: scale(1.03) rotate(-1deg);
 }
 
 .subtitle {
@@ -82,4 +90,25 @@ button:hover {
 }
 .credit a:hover {
   text-decoration: underline;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+.spinner div {
+  width: 18px;
+  height: 18px;
+  margin: 0 6px;
+  border-radius: 50%;
+  background: #0078d7;
+  animation: bounce 0.7s infinite alternate;
+}
+.spinner div:nth-child(2) { animation-delay: 0.2s; }
+.spinner div:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  to { transform: translateY(-24px); opacity: 0.6; }
 }
