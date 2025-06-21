@@ -9,9 +9,11 @@
 <body>
   <div class="container">
     <h1>Lens of Creatives</h1>
+    <p class="subtitle">Type a word or phrase and discover visual inspiration.</p>
     <form method="POST">
-      <input type="text" name="mood" placeholder="Describe how you feel..." required/>
-      <button type="submit">Find My Image</button>
+      <label for="prompt" class="visually-hidden">Creative prompt</label>
+      <input id="prompt" type="text" name="prompt" placeholder="What inspires you today?" required/>
+      <button type="submit">Show Me Inspiration</button>
     </form>
 
     {% if image_url %}

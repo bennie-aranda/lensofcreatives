@@ -2,29 +2,22 @@ import os
 from flask import Flask, render_template, request
 import requests
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+app = Flask(__name__)
 
-app = Flask(
-    __name__,
-    template_folder=os.path.join(BASE_DIR, 'templates'),
-    static_folder=os.path.join(BASE_DIR, 'static')
-)
-
-# 🔑 Replace with your actual Unsplash Access Key
-UNSPLASH_ACCESS_KEY = 'DTLEWE9_Pd90KFiBxY70nt2AHkMi4_Vm3nDUhJi557A'
+UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     image_url = None
 
     if request.method == "POST":
-        mood = request.form.get("mood")
-        if mood:
+        prompt = request.form.get("prompt")  # changed from "mood" to "prompt"
+        if prompt:
             try:
                 response = requests.get(
                     "https://api.unsplash.com/photos/random",
                     params={
-                        "query": mood,
+                        "query": prompt,  # changed from "mood" to "prompt"
                         "orientation": "landscape",
                         "client_id": UNSPLASH_ACCESS_KEY
                     }
@@ -39,4 +32,5 @@ def index():
 
     return render_template("index.html", image_url=image_url)
 
-    handler = app
+if __name__ == "__main__":
+    app.run(debug=True)
