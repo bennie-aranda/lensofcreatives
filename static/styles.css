@@ -70,3 +70,16 @@ button:hover {
   height: 1px;
   overflow: hidden;
 }
+
+.credit {
+  font-size: 0.95rem;
+  color: #888;
+  margin-top: 0.5rem;
+}
+.credit a {
+  color: #0078d7;
+  text-decoration: none;
+}
+.credit a:hover {
+  text-decoration: underline;
+}

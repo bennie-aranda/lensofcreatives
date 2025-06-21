@@ -10,6 +10,8 @@ UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY")
 @app.route("/", methods=["GET", "POST"])
 def index():
     image_url = None
+    photographer_name = None
+    photographer_url = None
     try:
         if request.method == "POST":
             prompt = request.form.get("prompt")
@@ -25,9 +27,16 @@ def index():
                 if response.status_code == 200:
                     data = response.json()
                     image_url = data["urls"]["regular"]
+                    photographer_name = data["user"]["name"]
+                    photographer_url = data["user"]["links"]["html"]
                 else:
                     print("Error:", response.status_code, response.text)
-        return render_template("index.html", image_url=image_url)
+        return render_template(
+            "index.html",
+            image_url=image_url,
+            photographer_name=photographer_name,
+            photographer_url=photographer_url
+        )
     except Exception as e:
         print("Exception occurred:", e)
         traceback.print_exc()

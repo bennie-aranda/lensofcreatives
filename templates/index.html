@@ -18,7 +18,16 @@
 
     {% if image_url %}
       <div class="image-result">
-        <img src="{{ image_url }}" alt="Mood image"/>
+        <img src="{{ image_url }}" alt="Creative inspiration image"/>
+        {% if photographer_name and photographer_url %}
+          <p class="credit">
+            Photo by
+            <a href="{{ photographer_url }}" target="_blank" rel="noopener">
+              {{ photographer_name }}
+            </a>
+            on <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a>
+          </p>
+        {% endif %}
       </div>
     {% endif %}
   </div>
