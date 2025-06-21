@@ -4,7 +4,7 @@ import requests
 
 app = Flask(__name__)
 
-UNSPLASH_ACCESS_KEY = os.environ.get("DTLEWE9_Pd90KFiBxY70nt2AHkMi4_Vm3nDUhJi557A")
+UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
