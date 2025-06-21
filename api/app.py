@@ -1,23 +1,23 @@
 import os
 from flask import Flask, render_template, request
 import requests
+import traceback
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
 UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     image_url = None
-
-    if request.method == "POST":
-        prompt = request.form.get("prompt")  # changed from "mood" to "prompt"
-        if prompt:
-            try:
+    try:
+        if request.method == "POST":
+            prompt = request.form.get("prompt")
+            if prompt:
                 response = requests.get(
                     "https://api.unsplash.com/photos/random",
                     params={
-                        "query": prompt,  # changed from "mood" to "prompt"
+                        "query": prompt,
                         "orientation": "landscape",
                         "client_id": UNSPLASH_ACCESS_KEY
                     }
@@ -27,10 +27,11 @@ def index():
                     image_url = data["urls"]["regular"]
                 else:
                     print("Error:", response.status_code, response.text)
-            except Exception as e:
-                print("Exception occurred:", e)
-
-    return render_template("index.html", image_url=image_url)
+        return render_template("index.html", image_url=image_url)
+    except Exception as e:
+        print("Exception occurred:", e)
+        traceback.print_exc()
+        return "Internal Server Error", 500
 
 if __name__ == "__main__":
     app.run(debug=True)
