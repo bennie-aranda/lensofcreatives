@@ -1,30 +1,25 @@
 import os
 from flask import Flask, render_template, request
 import requests
+import traceback
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
-app = Flask(
-    __name__,
-    template_folder=os.path.join(BASE_DIR, 'templates'),
-    static_folder=os.path.join(BASE_DIR, 'static')
-)
-
-# 🔑 Replace with your actual Unsplash Access Key
-UNSPLASH_ACCESS_KEY = 'DTLEWE9_Pd90KFiBxY70nt2AHkMi4_Vm3nDUhJi557A'
+UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     image_url = None
-
-    if request.method == "POST":
-        mood = request.form.get("mood")
-        if mood:
-            try:
+    photographer_name = None
+    photographer_url = None
+    try:
+        if request.method == "POST":
+            prompt = request.form.get("prompt")
+            if prompt:
                 response = requests.get(
                     "https://api.unsplash.com/photos/random",
                     params={
-                        "query": mood,
+                        "query": prompt,
                         "orientation": "landscape",
                         "client_id": UNSPLASH_ACCESS_KEY
                     }
@@ -32,11 +27,22 @@ def index():
                 if response.status_code == 200:
                     data = response.json()
                     image_url = data["urls"]["regular"]
+                    photographer_name = data["user"]["name"]
+                    photographer_url = data["user"]["links"]["html"]
                 else:
                     print("Error:", response.status_code, response.text)
-            except Exception as e:
-                print("Exception occurred:", e)
+        return render_template(
+            "index.html",
+            image_url=image_url,
+            photographer_name=photographer_name,
+            photographer_url=photographer_url
+        )
+    except Exception as e:
+        print("Exception occurred:", e)
+        traceback.print_exc()
+        return "Internal Server Error", 500
 
-    return render_template("index.html", image_url=image_url)
-
-    handler = app
+if __name__ == "__main__":
+    app.run(debug=True)
+    
+    

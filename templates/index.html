@@ -9,16 +9,55 @@
 <body>
   <div class="container">
     <h1>Lens of Creatives</h1>
+    <p class="subtitle">Type a word or phrase and discover visual inspiration.</p>
     <form method="POST">
-      <input type="text" name="mood" placeholder="Describe how you feel..." required/>
-      <button type="submit">Find My Image</button>
+      <label for="prompt" class="visually-hidden">Creative prompt</label>
+      <input id="prompt" type="text" name="prompt" placeholder="What inspires you today?" required/>
+      <button type="submit">Show Me Inspiration</button>
     </form>
 
     {% if image_url %}
       <div class="image-result">
-        <img src="{{ image_url }}" alt="Mood image"/>
+        <img src="{{ image_url }}" alt="Creative inspiration image"/>
+        {% if photographer_name and photographer_url %}
+          <p class="credit">
+            Photo by
+            <a href="{{ photographer_url }}" target="_blank" rel="noopener">
+              {{ photographer_name }}
+            </a>
+            on <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a>
+          </p>
+        {% endif %}
       </div>
     {% endif %}
   </div>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('form');
+  const imageResult = document.querySelector('.image-result');
+  const img = imageResult ? imageResult.querySelector('img') : null;
+
+  // Fade in image on load
+  if (img) {
+    img.style.opacity = 0;
+    img.onload = function() {
+      img.style.transition = 'opacity 0.8s';
+      img.style.opacity = 1;
+    };
+    // If cached, trigger load event
+    if (img.complete) img.onload();
+  }
+
+  // Show loading spinner on submit
+  form.addEventListener('submit', function() {
+    let spinner = document.createElement('div');
+    spinner.className = 'spinner';
+    spinner.innerHTML = '<div></div><div></div><div></div>';
+    imageResult && (imageResult.innerHTML = '');
+    imageResult && imageResult.appendChild(spinner);
+  });
+});
+</script>
 </body>
 </html>
