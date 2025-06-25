@@ -35,7 +35,7 @@
     {% endif %}
 
     {% if gallery and gallery|length > 0 %}
-      <form method="POST" action="/reset" style="text-align:right; margin-bottom:1rem;">
+      <form id="reset-form" method="POST" action="/reset" style="text-align:right; margin-bottom:1rem;">
         <button type="submit" class="reset-btn">Reset Inspirations</button>
       </form>
       <h2>Previous Inspirations</h2>
@@ -77,6 +77,22 @@ document.addEventListener('DOMContentLoaded', function() {
     imageResult && (imageResult.innerHTML = '');
     imageResult && imageResult.appendChild(spinner);
   });
+
+  const resetForm = document.getElementById('reset-form');
+  if (resetForm) {
+    resetForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      fetch('/reset', {method: 'POST'})
+        .then(() => {
+          // Remove the gallery from the DOM
+          const gallery = document.querySelector('.gallery');
+          const galleryHeader = document.querySelector('h2');
+          if (gallery) gallery.remove();
+          if (galleryHeader && galleryHeader.textContent.includes('Previous Inspirations')) galleryHeader.remove();
+          resetForm.remove(); // Optionally remove the reset button too
+        });
+    });
+  }
 });
 </script>
 </body>
