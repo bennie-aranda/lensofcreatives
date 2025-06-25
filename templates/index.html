@@ -35,6 +35,9 @@
     {% endif %}
 
     {% if gallery and gallery|length > 0 %}
+      <form method="POST" action="/reset" style="text-align:right; margin-bottom:1rem;">
+        <button type="submit" class="reset-btn">Reset Inspirations</button>
+      </form>
       <h2>Previous Inspirations</h2>
       <div class="gallery">
         {% for item in gallery %}
