@@ -7,8 +7,11 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-  <div class="container">
+  <div class="hero">
     <h1>Lens of Creatives</h1>
+    <p class="hero-subtitle">Find your next visual inspiration</p>
+  </div>
+  <div class="container">
     <p class="subtitle">Type a word or phrase and discover visual inspiration.</p>
     <form method="POST">
       <label for="prompt" class="visually-hidden">Creative prompt</label>
@@ -28,6 +31,20 @@
             on <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a>
           </p>
         {% endif %}
+      </div>
+    {% endif %}
+
+    {% if gallery and gallery|length > 0 %}
+      <h2>Previous Inspirations</h2>
+      <div class="gallery">
+        {% for item in gallery %}
+          <div class="gallery-item">
+            <img src="{{ item.image_url }}" alt="Previous inspiration"/>
+            <p class="credit">
+              Photo by <a href="{{ item.photographer_url }}" target="_blank">{{ item.photographer_name }}</a>
+            </p>
+          </div>
+        {% endfor %}
       </div>
     {% endif %}
   </div>

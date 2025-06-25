@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import requests
 import traceback
 
@@ -7,11 +7,15 @@ app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
 UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY")
 
+app.secret_key = os.environ.get("SECRET_KEY", "dev")  # Needed for session
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     image_url = None
     photographer_name = None
     photographer_url = None
+    if "gallery" not in session:
+        session["gallery"] = []
     try:
         if request.method == "POST":
             prompt = request.form.get("prompt")
@@ -29,13 +33,21 @@ def index():
                     image_url = data["urls"]["regular"]
                     photographer_name = data["user"]["name"]
                     photographer_url = data["user"]["links"]["html"]
+                    # Save to gallery
+                    session["gallery"].append({
+                        "image_url": image_url,
+                        "photographer_name": photographer_name,
+                        "photographer_url": photographer_url
+                    })
+                    session.modified = True
                 else:
                     print("Error:", response.status_code, response.text)
         return render_template(
             "index.html",
             image_url=image_url,
             photographer_name=photographer_name,
-            photographer_url=photographer_url
+            photographer_url=photographer_url,
+            gallery=session.get("gallery", [])
         )
     except Exception as e:
         print("Exception occurred:", e)
@@ -44,5 +56,5 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True)
-    
-    
+
+
