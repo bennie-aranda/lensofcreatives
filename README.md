@@ -10,6 +10,8 @@ A web app that displays inspiring images based on user prompts, powered by the U
 - **Prompt input form** for users to describe their creative vision
 - **Dynamically generated images** based on Unsplash API results
 - **Photographer credit** with direct links to Unsplash profiles
+- **Gallery of previous inspirations** (session-based)
+- **Reset button** to clear previous inspirations
 - **Loading spinner and smooth image transitions**
 - **Coming Soon landing page** for early visitors
 
@@ -19,6 +21,8 @@ A web app that displays inspiring images based on user prompts, powered by the U
 
 - Intuitive, minimalist layout
 - Large, vibrant image display
+- **Gallery view** for browsing previous search results
+- **Reset inspirations** button for a fresh start
 - Accessible and mobile-friendly controls
 
 ---
