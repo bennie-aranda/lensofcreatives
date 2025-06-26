@@ -1,72 +1,232 @@
-# Lens of Creatives
+# Lens of Creatives 🎨
 
-A web app that displays inspiring images based on user prompts, powered by the Unsplash API.
+> **Find your next visual inspiration with AI-powered creativity**
 
-- https://www.lensofcreatives.com/
+A modern web app that displays inspiring images based on user prompts, enhanced with AI-powered keyword expansion and beautiful responsive design.
 
----
-
-## 🚀 Features
-
-- **Clean, responsive design** for all devices
-- **Prompt input form** for users to describe their creative vision
-- **Dynamically generated images** based on Unsplash API results
-- **Photographer credit** with direct links to Unsplash profiles
-- **Gallery of previous inspirations** (session-based)
-- **Reset button** to clear previous inspirations
-- **Loading spinner and smooth image transitions**
-- **Coming Soon landing page** for early visitors
+🌐 **Live Site:** https://www.lensofcreatives.com/
 
 ---
 
-## 🎨 User Interface
+## ✨ Features
 
-- Intuitive, minimalist layout
-- Large, vibrant image display
-- **Gallery view** for browsing previous search results
-- **Reset inspirations** button for a fresh start
-- Accessible and mobile-friendly controls
+### 🤖 **AI-Powered Enhancement**
+- **Intelligent keyword expansion** using Hugging Face API
+- **Semantic understanding** of emotions and abstract concepts
+- **Smart fallback system** for reliable operation
+- **Enhanced search relevancy** for better visual matches
+
+### 🎨 **Modern Design**
+- **Beautiful gradient background** that complements hero imagery
+- **Mountain landscape hero section** with stunning overlay effects
+- **Google Fonts integration** (Inter) for modern typography
+- **Smooth animations** and hover effects throughout
+- **Professional shadows** and depth for visual appeal
+
+### 📱 **Mobile-First Experience**
+- **Fully responsive design** optimized for all devices
+- **Touch-friendly interactions** with proper tap targets
+- **Mobile-specific optimizations** and layouts
+- **iOS Safari compatibility** with webkit fixes
+- **Progressive enhancement** for better performance
+
+### 🖼️ **Image Experience**
+- **High-quality landscape images** from Unsplash API
+- **Photographer attribution** with direct profile links
+- **Image gallery** for browsing previous inspirations
+- **Smooth loading animations** and transitions
+- **One-click reset** functionality for fresh starts
+
+---
+
+## 🎯 How It Works
+
+1. **User Input:** Enter any creative prompt (e.g., "feeling inspired", "need motivation")
+2. **AI Enhancement:** System expands prompt with relevant visual keywords
+3. **Smart Search:** Enhanced query searches Unsplash for perfect matches
+4. **Beautiful Display:** Image appears with smooth animations and proper attribution
+5. **Gallery Building:** Previous searches build a personal inspiration gallery
+
+### 🧠 **AI Enhancement Examples:**
+- `"feeling sad"` → `"feeling sad melancholy rain gray solitude"`
+- `"creative inspiration"` → `"creative inspiration art design abstract"`
+- `"adventure calling"` → `"adventure calling hiking travel exploration"`
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** HTML, CSS, JavaScript
-- **Backend:** Python (Flask)
-- **API:** Unsplash API
-- **Deployment:** Vercel
+### **Frontend**
+- **HTML5** with semantic structure
+- **Modern CSS** with Grid/Flexbox layouts
+- **Vanilla JavaScript** for interactions
+- **Google Fonts** (Inter) for typography
+- **CSS Custom Properties** for theming
+
+### **Backend**
+- **Python 3.9+** with Flask framework
+- **Hugging Face Transformers** for AI enhancement
+- **Session management** for gallery persistence
+- **Error handling** with graceful fallbacks
+
+### **APIs & Services**
+- **Unsplash API** for high-quality images
+- **Hugging Face API** for AI text processing
+- **Vercel** for serverless deployment
+
+### **AI/ML**
+- **Transformers library** for text processing
+- **PyTorch** for model inference
+- **Keyword mapping** fallback system
+- **Semantic enhancement** algorithms
 
 ---
 
-## 📦 Setup & Deployment
+## 🚀 Getting Started
 
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/bennie-aranda/lensofcreatives.git
-   ```
-2. Install dependencies:
-   ```sh
-   pip install -r requirements.txt
-   ```
-3. Set your Unsplash API key as an environment variable:
-   ```sh
-   export UNSPLASH_ACCESS_KEY=your_unsplash_key
-   ```
-4. Run locally:
-   ```sh
-   python api/app.py
-   ```
-5. Deploy to Vercel (see `vercel.json` for config).
+### **Prerequisites**
+- Python 3.9 or higher
+- Unsplash API account (free)
+- Optional: Hugging Face account for production AI token
+
+### **Local Development**
+```bash
+# Clone the repository
+git clone https://github.com/bennie-aranda/lensofcreatives.git
+cd lensofcreatives
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variables
+export UNSPLASH_ACCESS_KEY=your_unsplash_api_key
+export SECRET_KEY=your_secret_key
+
+# Run the application
+python api/app.py
+```
+
+### **Testing AI Enhancement**
+```bash
+# Test the AI enhancement system
+python test_ai_enhancement.py
+```
+
+### **Deployment**
+The app is configured for **Vercel** deployment:
+- Uses `vercel.json` for serverless configuration
+- Environment variables set in Vercel dashboard
+- Automatic deployments from GitHub
 
 ---
 
-## 🙏 Credits
+## 🔧 Configuration
 
-- Images provided by [Unsplash](https://unsplash.com)
-- Built by [Bennie Aranda](https://github.com/bennie-aranda)
+### **Environment Variables**
+```bash
+UNSPLASH_ACCESS_KEY=your_unsplash_api_key    # Required
+SECRET_KEY=your_flask_secret_key             # Required for sessions
+HUGGINGFACE_TOKEN=your_hf_token             # Optional (uses demo token)
+```
+
+### **AI Enhancement Settings**
+- **Free Tier**: Uses Hugging Face demo token (limited requests)
+- **Production**: Set your own Hugging Face API token for unlimited usage
+- **Fallback**: Always works with built-in keyword mapping
 
 ---
 
-## 📣 Coming Soon
+## 🧪 Features in Detail
 
-- More creative features and enhancements!
+### **Intelligent Keyword Expansion**
+The AI system understands context and emotions:
+- **Emotional states** → Visual concepts
+- **Abstract ideas** → Concrete imagery
+- **Mood descriptors** → Aesthetic styles
+- **Creative prompts** → Artistic elements
+
+### **Mobile Optimization**
+- **Touch targets** sized for fingers (44px minimum)
+- **Viewport optimization** for all screen sizes
+- **Performance tuning** for mobile networks
+- **iOS/Android compatibility** testing
+
+### **Image Quality & Attribution**
+- **High-resolution images** (1200px+ width)
+- **Landscape orientation** for better display
+- **Proper attribution** with photographer links
+- **Loading optimization** with progressive enhancement
+
+---
+
+## 📊 Project Structure
+
+```
+lensofcreatives/
+├── api/
+│   └── app.py              # Flask backend with AI integration
+├── static/
+│   └── styles.css          # Modern CSS with mobile-first design
+├── templates/
+│   └── index.html          # HTML template with semantic structure
+├── test_ai_enhancement.py  # AI testing script
+├── requirements.txt        # Python dependencies
+├── vercel.json            # Deployment configuration
+└── README.md              # Project documentation
+```
+
+---
+
+## 🔮 Future Enhancements
+
+- [ ] **User accounts** for saving favorite inspirations
+- [ ] **Advanced AI models** for even better keyword expansion
+- [ ] **Multiple image orientations** (portrait, square)
+- [ ] **Theme customization** and dark mode
+- [ ] **Social sharing** features
+- [ ] **Inspiration collections** and tagging
+- [ ] **API rate limiting** and caching
+- [ ] **Progressive Web App** features
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit issues and pull requests.
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+## 🙏 Acknowledgments
+
+- **[Unsplash](https://unsplash.com)** for providing beautiful, high-quality images
+- **[Hugging Face](https://huggingface.co)** for AI/ML infrastructure and models
+- **[Vercel](https://vercel.com)** for seamless deployment and hosting
+- **[Google Fonts](https://fonts.google.com)** for the Inter typography
+
+---
+
+## 📞 Contact
+
+**Bennie Aranda**  
+- GitHub: [@bennie-aranda](https://github.com/bennie-aranda)  
+- Website: [lensofcreatives.com](https://www.lensofcreatives.com)
+
+---
+
+*Built with ❤️ for creative minds everywhere*
