@@ -3,12 +3,14 @@ from flask import Flask, render_template, request, session
 import requests
 import traceback
 
+# Ensure the required environment variables are set
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
 UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY")
 
-app.secret_key = os.environ.get("SECRET_KEY", "dev")  # Needed for session
+app.secret_key = os.environ.get("SECRET_KEY", "dev")  
 
+# Ensure the secret key is set for session management
 @app.route("/", methods=["GET", "POST"])
 def index():
     image_url = None
@@ -54,11 +56,12 @@ def index():
         traceback.print_exc()
         return "Internal Server Error", 500
 
+# Route to get the gallery
 @app.route("/reset", methods=["POST"])
 def reset_gallery():
     session["gallery"] = []
     session.modified = True
-    return ("", 204)  # No content, for AJAX or simple reload
+    return ("", 204) # Reset the gallery without content  
 
 if __name__ == "__main__":
     app.run(debug=True)
