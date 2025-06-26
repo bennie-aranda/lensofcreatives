@@ -4,13 +4,44 @@ import requests
 import traceback
 import json
 import re
+from flask_talisman import Talisman
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+import secrets
 
 # Ensure the required environment variables are set
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
-UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY")
+# Security Configuration
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+if not app.config['SECRET_KEY']:
+    raise ValueError("SECRET_KEY environment variable must be set for production")
 
-app.secret_key = os.environ.get("SECRET_KEY", "dev")  
+# Initialize security extensions
+# Force HTTPS and set security headers
+Talisman(app, 
+    force_https=True,
+    strict_transport_security=True,
+    content_security_policy={
+        'default-src': "'self'",
+        'img-src': "'self' https://images.unsplash.com https://unsplash.com",
+        'font-src': "'self' https://fonts.googleapis.com https://fonts.gstatic.com",
+        'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
+        'script-src': "'self' 'unsafe-inline'"
+    })
+
+# Rate limiting
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"]
+)
+
+UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY")
+HUGGINGFACE_API_TOKEN = os.environ.get("HUGGINGFACE_API_TOKEN")
+
+if not UNSPLASH_ACCESS_KEY:
+    raise ValueError("UNSPLASH_ACCESS_KEY environment variable must be set")
 
 # AI keyword expansion using Hugging Face API
 def expand_prompt_with_ai(user_prompt):
@@ -25,8 +56,11 @@ def expand_prompt_with_ai(user_prompt):
         # Create a prompt for keyword expansion
         expansion_prompt = f"Generate visual search keywords for: {user_prompt}. Keywords:"
         
+        if not HUGGINGFACE_API_TOKEN:
+            return enhance_prompt_fallback(user_prompt)
+            
         headers = {
-            "Authorization": f"Bearer hf_demo",  # Demo token - replace with your own for production
+            "Authorization": f"Bearer {HUGGINGFACE_API_TOKEN}",
             "Content-Type": "application/json"
         }
         
@@ -99,8 +133,9 @@ def enhance_prompt_fallback(user_prompt):
     
     return enhanced
 
-# Ensure the secret key is set for session management
+# Main route with rate limiting
 @app.route("/", methods=["GET", "POST"])
+@limiter.limit("10 per minute")
 def index():
     image_url = None
     photographer_name = None
@@ -124,16 +159,21 @@ def index():
                 )
                 if response.status_code == 200:
                     data = response.json()
-                    image_url = data["urls"]["regular"]
-                    photographer_name = data["user"]["name"]
-                    photographer_url = data["user"]["links"]["html"]
-                    # Save to gallery
-                    session["gallery"].append({
-                        "image_url": image_url,
-                        "photographer_name": photographer_name,
-                        "photographer_url": photographer_url
-                    })
-                    session.modified = True
+                    # Validate response data
+                    if "urls" in data and "regular" in data["urls"]:
+                        image_url = data["urls"]["regular"]
+                        photographer_name = data.get("user", {}).get("name", "Unknown")
+                        photographer_url = data.get("user", {}).get("links", {}).get("html", "#")
+                        # Save to gallery with validation
+                        if image_url and photographer_name:
+                            session["gallery"].append({
+                                "image_url": image_url,
+                                "photographer_name": photographer_name,
+                                "photographer_url": photographer_url
+                            })
+                            session.modified = True
+                    else:
+                        print("Invalid response format from Unsplash API")
                 else:
                     print("Error:", response.status_code, response.text)
         return render_template(
@@ -148,14 +188,17 @@ def index():
         traceback.print_exc()
         return "Internal Server Error", 500
 
-# Route to get the gallery
+# Route to reset gallery with rate limiting
 @app.route("/reset", methods=["POST"])
+@limiter.limit("5 per minute")
 def reset_gallery():
     session["gallery"] = []
     session.modified = True
     return ("", 204) # Reset the gallery without content  
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Only enable debug in development
+    debug_mode = os.environ.get("FLASK_ENV") == "development"
+    app.run(debug=debug_mode)
 
 

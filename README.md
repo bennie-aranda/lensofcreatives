@@ -1,4 +1,38 @@
-# Lens of Creatives 🎨
+# Lens of Creatives - Security Update
+
+## 🚨 IMPORTANT: Security Configuration Required
+
+This update includes critical security improvements. You **MUST** configure environment variables before deployment.
+
+## Required Environment Variables
+
+Set these in your production environment (Vercel, Heroku, etc.):
+
+```bash
+# Generate a new secret key:
+SECRET_KEY=321edad7b5aa78e11b9166168e78260422ed8a89a8cd4d9dedd9717244a250f9
+
+# Your API keys:
+UNSPLASH_ACCESS_KEY=your-unsplash-access-key-here
+HUGGINGFACE_API_TOKEN=your-huggingface-token-here
+
+# Environment setting:
+FLASK_ENV=production
+```
+
+## Security Features Added
+
+✅ **HTTPS Enforcement** - Forces secure connections  
+✅ **Rate Limiting** - Prevents abuse (10 requests/minute per IP)  
+✅ **Security Headers** - CSP, HSTS, X-Frame-Options  
+✅ **Secret Key Validation** - No more hardcoded secrets  
+✅ **API Token Security** - All tokens from environment variables  
+✅ **Input Validation** - Validates API responses  
+✅ **Debug Mode Control** - Only enabled in development  
+
+---
+
+# Lens of Creatives
 
 > **Find your next visual inspiration with AI-powered creativity**
 
