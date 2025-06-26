@@ -15,33 +15,44 @@ app = Flask(__name__, template_folder="../templates", static_folder="../static")
 # Security Configuration
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 if not app.config['SECRET_KEY']:
-    raise ValueError("SECRET_KEY environment variable must be set for production")
+    print("WARNING: SECRET_KEY not set, using fallback (NOT SECURE FOR PRODUCTION)")
+    app.config['SECRET_KEY'] = "temporary-dev-key-change-in-production"
 
-# Initialize security extensions
-# Force HTTPS and set security headers
-Talisman(app, 
-    force_https=True,
-    strict_transport_security=True,
-    content_security_policy={
-        'default-src': "'self'",
-        'img-src': "'self' https://images.unsplash.com https://unsplash.com",
-        'font-src': "'self' https://fonts.googleapis.com https://fonts.gstatic.com",
-        'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
-        'script-src': "'self' 'unsafe-inline'"
-    })
-
-# Rate limiting
-limiter = Limiter(
-    app,
-    key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"]
-)
+# Initialize security extensions only if in production
+if os.environ.get("FLASK_ENV") == "production":
+    # Force HTTPS and set security headers
+    Talisman(app, 
+        force_https=True,
+        strict_transport_security=True,
+        content_security_policy={
+            'default-src': "'self'",
+            'img-src': "'self' https://images.unsplash.com https://unsplash.com",
+            'font-src': "'self' https://fonts.googleapis.com https://fonts.gstatic.com",
+            'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
+            'script-src': "'self' 'unsafe-inline'"
+        })
+    
+    # Rate limiting
+    limiter = Limiter(
+        app,
+        key_func=get_remote_address,
+        default_limits=["200 per day", "50 per hour"]
+    )
+else:
+    print("Development mode: Security features disabled")
+    # Create a dummy limiter for development
+    class DummyLimiter:
+        def limit(self, *args, **kwargs):
+            def decorator(f):
+                return f
+            return decorator
+    limiter = DummyLimiter()
 
 UNSPLASH_ACCESS_KEY = os.environ.get("UNSPLASH_ACCESS_KEY")
 HUGGINGFACE_API_TOKEN = os.environ.get("HUGGINGFACE_API_TOKEN")
 
 if not UNSPLASH_ACCESS_KEY:
-    raise ValueError("UNSPLASH_ACCESS_KEY environment variable must be set")
+    print("WARNING: UNSPLASH_ACCESS_KEY not set, app may not function properly")
 
 # AI keyword expansion using Hugging Face API
 def expand_prompt_with_ai(user_prompt):
