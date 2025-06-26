@@ -2,11 +2,11 @@
 
 ## 🚨 IMPORTANT: Security Configuration Required
 
-This update includes critical security improvements. You **MUST** configure environment variables before deployment.
+This update includes critical security improvements. The app will deploy and work without environment variables, but you **SHOULD** configure them for full security.
 
-## Required Environment Variables
+## Environment Variables (Recommended for Production)
 
-Set these in your production environment (Vercel, Heroku, etc.):
+Set these in your production environment (Vercel, Heroku, etc.) for full security features:
 
 ```bash
 # Generate a new secret key with: python3 -c "import secrets; print(secrets.token_hex(32))"
@@ -16,9 +16,22 @@ SECRET_KEY=your-generated-secret-key-here
 UNSPLASH_ACCESS_KEY=your-unsplash-access-key-here
 HUGGINGFACE_API_TOKEN=your-huggingface-token-here
 
-# Environment setting:
+# Environment setting (enables full security features):
 FLASK_ENV=production
 ```
+
+## 🔧 Deployment Status
+
+**✅ App will deploy without environment variables** (uses secure fallbacks)  
+**⚠️ Limited functionality** without UNSPLASH_ACCESS_KEY  
+**🔒 Full security** only with all environment variables set
+
+### Quick Deploy to Vercel:
+1. **Deploy first** - App will work with fallback settings
+2. **Add environment variables** in Vercel dashboard (optional but recommended)
+3. **Redeploy** for full security features
+
+**Recent Fix (2024-06-26):** Resolved deployment issues by making environment variables optional with secure fallbacks.
 
 ## Security Features Added
 
