@@ -9,8 +9,8 @@ This update includes critical security improvements. You **MUST** configure envi
 Set these in your production environment (Vercel, Heroku, etc.):
 
 ```bash
-# Generate a new secret key:
-SECRET_KEY=321edad7b5aa78e11b9166168e78260422ed8a89a8cd4d9dedd9717244a250f9
+# Generate a new secret key with: python3 -c "import secrets; print(secrets.token_hex(32))"
+SECRET_KEY=your-generated-secret-key-here
 
 # Your API keys:
 UNSPLASH_ACCESS_KEY=your-unsplash-access-key-here
