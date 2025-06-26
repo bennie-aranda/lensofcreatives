@@ -58,7 +58,7 @@ def index():
 def reset_gallery():
     session["gallery"] = []
     session.modified = True
-    return ("", 204)  
+    return ("", 204)  # No content, for AJAX or simple reload
 
 if __name__ == "__main__":
     app.run(debug=True)
